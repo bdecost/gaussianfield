@@ -16,11 +16,12 @@ def combinatorial_laplacian(W):
     return L
 
 
-def solve_gaussian_field(W, unlabeled):
+def solve_gaussian_field(W, labels, unlabeled):
     """  Compute solution to the harmonic function from Zhu 2003 (ICML) 
 
     Args:
         W: nxn matrix of edge weights
+        labels: class label array (dense encoding)
         unlabeled: n-element indicator vector for the unlabeled datapoints
 
     Returns:
@@ -54,7 +55,7 @@ def estimated_risk(field):
     return risk
     
 
-def expected_risk(field, L_uu_inv, unlabeled):
+def expected_risk(field, L_uu_inv):
     """ Compute the expected risk of the classifier f+(k), i.e. after adding each potential query k
 
     Args:
