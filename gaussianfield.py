@@ -41,25 +41,7 @@ def solve(W, labels, labeled):
     laplacian_uu_inv = np.linalg.inv(laplacian_uu)
     field = laplacian_uu_inv.dot(W_ul).dot(labels[labeled])
     
-    return field, laplacian_uu_inv
-
-
-def expected_risk(field, laplacian_uu_inv, nclasses=2):
-    """ Compute the expected risk of the classifier f+(k), i.e. after adding each potential query k
-
-    Args:
-        field: Gaussian Field values at unlabeled points
-        laplacian_uu_inv: inverted Laplacian matrix for unlabeled points
-        nclasses: integer -- number of classes allowed
-    Returns: 
-        risk: vector with one entry for each potential query
-    """
-
-        # Consider the estimated risk after adding each potential query point k
-    risk = []
-    n_unlabeled = L_uu_inv.shape[0]
-
-    # translate Zhu's vectorized matlab code from active_learning.m here...
+    return field, l
 
 
 def expected_risk(field, Linv):
@@ -67,7 +49,7 @@ def expected_risk(field, Linv):
 
     Args:
         field: Gaussian Field values at unlabeled points
-        laplacian_uu_inv: inverted Laplacian matrix for unlabeled points
+        Linv: inverted Laplacian matrix for unlabeled points
 
     Returns: 
         risk: vector with one entry for each potential query
