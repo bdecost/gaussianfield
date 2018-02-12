@@ -39,9 +39,9 @@ def solve(W, labels, labeled):
     
     # Naive solution to the gaussian field
     laplacian_uu_inv = np.linalg.inv(laplacian_uu)
-    field = laplacian_uu_inv.dot(W_ul).dot(labels[labeled])
+    field = laplacian_uu_inv.dot(W_ul).dot(labels)
     
-    return field, l
+    return field, laplacian_uu_inv
 
 
 def expected_risk(field, Linv):
