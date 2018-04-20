@@ -15,20 +15,20 @@ def combinatorial_laplacian(W):
     return laplacian
 
 
-def solve(W, labels, labeled):
+def solve(W, labels, observed):
     """  Compute solution to the harmonic function from Zhu 2003 (ICML)
 
     Careful: the workshop paper has an error in equation 3
     Follow equation 5 from the ICML conference paper instead
 
     Args:
-        W: nxn matrix of edge weights
-        labels: class label array (one-hot encoding)
-        labeled: n-element indicator vector for the labeled datapoints
+        W: (n, n) matrix of edge weights
+        labels: (n_observed, n_classes) class label array (one-hot encoding)
+        observed: n-element indicator vector for the observed datapoints
 
     Returns:
-        field: Gaussian Field values at unlabeled points
-        delta_uu_inv: inverted Laplacian submatrix for unlabeled points
+        field: Gaussian Field values at unobserved (unlabeled) points
+        laplacian_uu_inv: inverted Laplacian submatrix for unobserved (unlabeled) points
     """
 
     laplacian = combinatorial_laplacian(W)
@@ -36,10 +36,11 @@ def solve(W, labels, labeled):
     # invDeltaU = full(inv(Delta(U,U)))
 
     # partition the laplacian into labeled and unlabeled blocks...
-    laplacian_uu = laplacian[np.ix_(~labeled, ~labeled)]
-    W_ul = W[np.ix_(~labeled, labeled)]
+    laplacian_uu = laplacian[np.ix_(~observed, ~observed)]
+    W_ul = W[np.ix_(~observed, observed)]
 
     # Naive solution to the gaussian field
+    # TODO: implement the efficient inverse laplacian update
     laplacian_uu_inv = np.linalg.inv(laplacian_uu)
     field = laplacian_uu_inv.dot(W_ul).dot(labels)
 
