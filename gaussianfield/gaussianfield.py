@@ -47,13 +47,12 @@ def solve(W, labels, observed):
     return field, laplacian_uu_inv
 
 
-
-def expected_risk_pre(field, Linv):
+def expected_risk(field, Linv):
     """ Compute the expected risk of the classifier f+(k), i.e. after adding each potential query k
 
     Args:
-        field: Gaussian Field values at unlabeled points
-        Linv: inverted Laplacian matrix for unlabeled points
+        field: Gaussian Field values at unobserved (unlabeled) points
+        Linv: inverted Laplacian matrix for unobserved (unlabeled) points
 
     Returns:
         risk: vector with one entry for each potential query
@@ -61,16 +60,16 @@ def expected_risk_pre(field, Linv):
 
     # translate Zhu's vectorized matlab code from active_learning.m here...
 
-    n_unlabeled, nclasses = field.shape
+    n_unobserved, nclasses = field.shape
 
     # divide kth column-wise by diagonal elements
     nG = Linv / np.diag(Linv)[:,np.newaxis].T
 
     # for each possible label
-    risk = np.zeros(n_unlabeled)
+    risk = np.zeros(n_unobserved)
 
     # compute prefactor:
-    pre_maxfplus = np.zeros((n_unlabeled,n_unlabeled))
+    pre_maxfplus = np.zeros((n_unobserved,n_unobserved))
     for c in range(nclasses):
         np.maximum(
             field[:,c][:,None] - field[:,c].T * nG,
