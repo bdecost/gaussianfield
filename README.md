@@ -16,11 +16,13 @@ from keras.utils.np_utils import to_categorical
 
 # load data, labels, compute kernel matrix...
 X, labels = load_dataset(...)
+N, ndim = X.shape
 K = compute_kernel_matrix(X)
 
 # choose some random examples for initial observed set...
 thresh = 0.05
-observed = np.random.random(10) < thresh
+observed = np.random.random(N) < thresh
+N_observed = observed.sum()
 
 field_solution, inverse_laplacian = gaussianfield.solve(K, labels[observed], observed)
 class_predictions = np.argmax(field, axis=1)
